@@ -1,6 +1,11 @@
 <html>
 <head>
     <title>Liste de notes</title>
+    {% for flashMessage in app.session.flashBag.get('notice') %}
+        <div class="flash-notice">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}  
 </head>
 <body>
     <h1>Liste de notes</h1>

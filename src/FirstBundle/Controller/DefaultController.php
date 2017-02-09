@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class DefaultController extends Controller
@@ -17,13 +18,21 @@ class DefaultController extends Controller
      * @Route("/")
      */
     public function indexAction() {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $product = $em->getRepository('FirstBundle:note')->findAll();
+        foreach ($product as $note) {
+            print('test');
+        }
+
         return $this->render('FirstBundle:Note:index.html.twig');
     }
 
     /**
      * @Route("/newNote", name="newNote")
      */
-    public function newNoteAction(Resquest $request) {
+    public function newNoteAction(Request $request) {
         $task = new note();
 
         $form = $this->createFormBuilder($task)
@@ -35,14 +44,15 @@ class DefaultController extends Controller
         $form->handleRequest($request);
         $task = $form->getData();
 
-        if($form->isValide()) {
+        if($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($task);
             $em->flush();
-            return new Response('La note a été ajoutée avec succés !');
+            $this->addFlash('notice', 'La note a bien été engeristée');
+            return $this->render('FirstBundle:Note:index.html.twig');
         }
 
-        return $this->render('FirstBundle:Note:newNote.html.twig', array('form' => $form->creatView()));
+        return $this->render('FirstBundle:Note:newNote.html.twig', array('form' => $form->createView()));
 
     }
 
