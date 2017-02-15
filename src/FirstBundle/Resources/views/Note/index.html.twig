@@ -5,11 +5,33 @@
         <div class="flash-notice">
             {{ flashMessage }}
         </div>
-    {% endfor %}  
+    {% endfor %}
 </head>
 <body>
     <h1>Liste de notes</h1>
-    <a href="{{ path('newNote') }}">Ajouter une note</a>
+    <a href="{{ path('newNote') }}">
+        <button type="button" name="add_note">Ajouter une note</button>
+    </a>
+    <a href="{{ path('newCategorie') }}">
+        <button type="button" name="add_cat">Ajouter une catégorie</button>
+    </a>
+    <a href="{{ path('listeCategorie') }}">
+        <button type="button" name="list_cat">Voir les catégories</button>
+    </a>
+
+    {% for note in notes %}
+        <div class='note' id="{{note.id}}">
+            <div class="title">{{note.title}}</div>
+            <div class="content">{{note.content}}</div>
+            <div class="content">{{note.categorie.name}}</div>
+            <a href="{{ path('deleteNote', {'id' :note.id}) }}">
+                <button type="button" name="del_note">Supprimer la note</button>
+            </a>
+            <a href="{{ path('modifyNote', {'id' :note.id}) }}">
+                <button type="button" name="modify_note">Modifier la note</button>
+            </a>
+        </div>
+    {% endfor %}
 </body>
 
 </html>

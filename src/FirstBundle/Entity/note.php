@@ -35,6 +35,22 @@ class note
      */
     private $content;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime")
+     */
+     private $date;
+
+     /**
+      *@ORM\ManyToOne(targetEntity="categorie", inversedBy="note")
+      *@ORM\JoinColumn(name="categorie_id", referencedColumnName="id")
+      */
+     private $categorie;
+
+     public function __construct() {
+         $this->date = new \DateTime();
+     }
 
     /**
      * Get id
@@ -70,6 +86,8 @@ class note
         return $this->title;
     }
 
+
+
     /**
      * Set content
      *
@@ -93,5 +111,52 @@ class note
     {
         return $this->content;
     }
-}
 
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return note
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set categorie
+     *
+     * @param \FirstBundle\Entity\categorie $categorie
+     *
+     * @return note
+     */
+    public function setCategorie(\FirstBundle\Entity\categorie $categorie = null)
+    {
+        $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    /**
+     * Get categorie
+     *
+     * @return \FirstBundle\Entity\categorie
+     */
+    public function getCategorie()
+    {
+        return $this->categorie;
+    }
+}
