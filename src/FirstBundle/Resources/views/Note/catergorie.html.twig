@@ -17,7 +17,7 @@
     </a>
 
     {% for categorie in categories %}
-        <div class='note' id="{{categorie.id}}">
+        <div class='categorie' id="{{categorie.id}}">
             <div class="title">{{categorie.name}}</div>
             <a href="{{ path('deleteCategorie', {'id' :categorie.id}) }}">
                 <button type="button" name="del_cat">Supprimer la catégorie</button>

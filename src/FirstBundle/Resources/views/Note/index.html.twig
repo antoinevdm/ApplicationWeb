@@ -9,12 +9,6 @@
 </head>
 <body>
     <h1>Liste de notes</h1>
-    <a href="{{ path('newNote') }}">
-        <button type="button" name="add_note">Ajouter une note</button>
-    </a>
-    <a href="{{ path('newCategorie') }}">
-        <button type="button" name="add_cat">Ajouter une catégorie</button>
-    </a>
     <a href="{{ path('listeCategorie') }}">
         <button type="button" name="list_cat">Voir les catégories</button>
     </a>
@@ -32,6 +26,13 @@
             </a>
         </div>
     {% endfor %}
+
+    <a href="{{ path('newNote') }}">
+        <button type="button" name="add_note">Ajouter une note</button>
+    </a>
+    <a href="{{ path('newCategorie') }}">
+        <button type="button" name="add_cat">Ajouter une catégorie</button>
+    </a>
 </body>
 
 </html>
