@@ -1,6 +1,9 @@
 <html>
 <head>
     <title>Liste de notes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
     {% for flashMessage in app.session.flashBag.get('notice') %}
         <div class="flash-notice">
             {{ flashMessage }}
@@ -8,31 +11,43 @@
     {% endfor %}
 </head>
 <body>
+    <div class="container">
     <h1>Liste de notes</h1>
     <a href="{{ path('listeCategorie') }}">
-        <button type="button" name="list_cat">Voir les catégories</button>
+        <button type="button"  class="btn btn-primary">Gestion
+            des catégories</button>
     </a>
-
+    <a href="{{ path('newNote') }}">
+        <button type="button" class="btn btn-primary">Ajouter une note</button>
+    </a>
+    <br></br>
     {% for note in notes %}
         <div class='note' id="{{note.id}}">
-            <div class="title">{{note.title}}</div>
-            <div class="content">{{note.content}}</div>
-            <div class="content">{{note.categorie.name}}</div>
-            <a href="{{ path('deleteNote', {'id' :note.id}) }}">
-                <button type="button" name="del_note">Supprimer la note</button>
-            </a>
-            <a href="{{ path('modifyNote', {'id' :note.id}) }}">
-                <button type="button" name="modify_note">Modifier la note</button>
-            </a>
+            <div class="row">
+                <div class="well well-lg">
+                    <legend>
+                        <b>{{note.title}}<br></b>
+                        {{note.categorie.name}} - <!-- ADD DATE ! -->
+                    </legend>
+                    <div class="well">
+                        <div>
+                            {{note.content}}
+                        </div>
+                    </div>
+                    <a href="{{ path('deleteNote', {'id' :note.id}) }}">
+                        <button type="button" class="btn btn-primary">Supprimer la note</button>
+                    </a>
+                    <a href="{{ path('modifyNote', {'id' :note.id}) }}">
+                        <button type="button" class="btn btn-primary">Modifier la note</button>
+                    </a>
+                </div>
+
+            </div>
         </div>
     {% endfor %}
-
-    <a href="{{ path('newNote') }}">
-        <button type="button" name="add_note">Ajouter une note</button>
-    </a>
-    <a href="{{ path('newCategorie') }}">
-        <button type="button" name="add_cat">Ajouter une catégorie</button>
-    </a>
+    </div>
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 </body>
 
 </html>

@@ -1,17 +1,29 @@
 <html>
 <head>
     <title>Nouvelle catégorie</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
     {% for flashMessage in app.session.flashBag.get('notice') %}
         <div class="flash-notice">
             {{ flashMessage }}
         </div>
     {% endfor %}
+    {% form_theme form 'bootstrap_3_layout.html.twig' %}
+    {# {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %} #}
 </head>
 <body>
-    <h1>Nouvelle catégorie</h1>
-    <div>
-        {{ form(form) }}
+    <div class="container">
+        <h1>Nouvelle catégorie</h1>
+        <div>
+            {{ form(form) }}
+            <a href="{{ path('listeCategorie') }}">
+                <button type="button" class="btn btn-primary">Retour</button>
+            </a>
+        </div>
     </div>
 
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 </body>
 </html>
