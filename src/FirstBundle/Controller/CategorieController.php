@@ -20,9 +20,13 @@ class CategorieController extends Controller
      * @Route("/listeCategorie", name="listeCategorie")
      */
     public function showCategorie() {
-        $em = $this->getDoctrine()->getManager();
-
-        $product = $em->getRepository('FirstBundle:categorie')->findAll();
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $product = $em->getRepository('FirstBundle:categorie')->findAll();
+        } catch (\Doctrine\DBAL\DBALException $e) {
+            $this->addFlash('bad', 'erreur de connection a la DB');
+            return $this->redirect($this->generateUrl('listeCategorie'));
+        }
 
         return $this->render('FirstBundle:Note:catergorie.html.twig', array('categories' => $product));
     }
@@ -40,12 +44,16 @@ class CategorieController extends Controller
      * @Route("/deleteCategorie/{id}", name="deleteCategorie")
      */
     public function deleteCategorie(categorie $cat) {
-        $em = $this->getDoctrine()->getManager();
-        $toDel = $em->getRepository('FirstBundle:categorie')->find($cat);
-
-        $em->remove($toDel);
-        $em->flush();
-
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $toDel = $em->getRepository('FirstBundle:categorie')->find($cat);
+            $em->remove($toDel);
+            $em->flush();
+        } catch (\Doctrine\DBAL\DBALException $e) {
+            $this->addFlash('bad', 'La catégorie n a pas pu être supprimée');
+            return $this->redirect($this->generateUrl('listeCategorie'));
+        }
+        $this->addFlash('notice', 'La catégorie a bien été supprimée');
         return $this->redirect($this->generateUrl('listeCategorie'));
     }
 
@@ -62,9 +70,14 @@ class CategorieController extends Controller
         $task = $form->getData();
 
         if($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($task);
-            $em->flush();
+            try {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($task);
+                $em->flush();
+            } catch(\Doctrine\DBAL\DBALException $e) {
+                $this->addFlash('bad', 'La catégorie na pas pu être editée');
+                return $this->redirect($this->generateUrl('listeCategorie'));
+            }
             $this->addFlash('notice', 'La catégorie a bien été engeristée');
             return $this->redirect($this->generateUrl('listeCategorie'));
         }

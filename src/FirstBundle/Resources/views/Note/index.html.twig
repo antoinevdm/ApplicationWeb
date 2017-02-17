@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
     {% for flashMessage in app.session.flashBag.get('notice') %}
-        <div class="flash-notice">
+        <div class="alert alert-success">
             {{ flashMessage }}
         </div>
     {% endfor %}
@@ -28,6 +28,7 @@
                     <legend>
                         <b>{{note.title}}<br></b>
                         {{note.categorie.name}} - <!-- ADD DATE ! -->
+                        {{note.date|date('d/m/Y')}}
                     </legend>
                     <div class="well">
                         <div>

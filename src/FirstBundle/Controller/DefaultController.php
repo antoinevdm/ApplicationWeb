@@ -19,9 +19,13 @@ class DefaultController extends Controller
      * @Route("/", name="home")
      */
     public function showNote() {
-        $em = $this->getDoctrine()->getManager();
-
-        $product = $em->getRepository('FirstBundle:note')->findAll();
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $product = $em->getRepository('FirstBundle:note')->findAll();
+        } catch (\Doctrine\DBAL\DBALException $e) {
+            $this->addFlash('bad', 'erreur de connection a la DB');
+            return $this->redirect($this->generateUrl('home'));
+        }
 
         return $this->render('FirstBundle:Note:index.html.twig', array('notes' => $product));
     }
@@ -41,10 +45,15 @@ class DefaultController extends Controller
     public function deleteNote(note $note) {
         $em = $this->getDoctrine()->getManager();
         $toDel = $em->getRepository('FirstBundle:note')->find($note);
+        try {
+            $em->remove($toDel);
+            $em->flush();
+        } catch (\Doctrine\DBAL\DBALException $e) {
+            $this->addFlash('bad', 'La note n a pas pu être supprimée');
+            return $this->redirect($this->generateUrl('home'));
+        }
 
-        $em->remove($toDel);
-        $em->flush();
-
+        $this->addFlash('notice', 'La note a bien été supprimée');
         return $this->redirect($this->generateUrl('home'));
     }
 
@@ -71,9 +80,14 @@ class DefaultController extends Controller
         $task = $form->getData();
 
         if($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($task);
-            $em->flush();
+            try {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($task);
+                $em->flush();
+            } catch(\Doctrine\DBAL\DBALException $e) {
+                $this->addFlash('bad', 'La note n a pas pu être editée');
+                return $this->redirect($this->generateUrl('home'));
+            }
             $this->addFlash('notice', 'La note a bien été engeristée');
             return $this->redirect($this->generateUrl('home'));
         }

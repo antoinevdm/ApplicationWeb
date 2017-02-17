@@ -5,7 +5,12 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
     {% for flashMessage in app.session.flashBag.get('notice') %}
-        <div class="flash-notice">
+        <div class="alert alert-success">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashBag.get('bad') %}
+        <div class="alert alert-danger">
             {{ flashMessage }}
         </div>
     {% endfor %}

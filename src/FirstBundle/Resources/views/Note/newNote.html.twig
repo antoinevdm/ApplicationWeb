@@ -4,11 +4,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
-    {% for flashMessage in app.session.flashBag.get('notice') %}
-        <div class="flash-notice">
-            {{ flashMessage }}
-        </div>
-    {% endfor %}
     {% form_theme form 'bootstrap_3_layout.html.twig' %}
     {# {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %} #}
 </head>
