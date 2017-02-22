@@ -13,7 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class DefaultController extends Controller
+class NoteController extends Controller
 {
     /**
      * @Route("/", name="home")

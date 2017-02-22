@@ -19,22 +19,32 @@
     <div class="container">
         <h1>Liste de catégories</h1>
         <a href="{{ path('newCategorie') }}">
-            <button type="button" class="btn btn-primary">Ajouter une catégorie</button>
+            <button type="button" class="btn btn-primary">
+                <span class="glyphicon glyphicon-plus"></span>
+                Ajouter une catégorie
+            </button>
         </a>
         <br></br>
         {% for categorie in categories %}
             <div class='well well-lg' id="{{categorie.id}}">
                 <legend><b>{{categorie.name}}</b></legend>
                 <a href="{{ path('deleteCategorie', {'id' :categorie.id}) }}">
-                    <button type="button" class="btn btn-primary">Supprimer la catégorie</button>
+                    <button type="button" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
                 </a>
                 <a href="{{ path('modifyCategorie', {'id' :categorie.id}) }}">
-                    <button type="button" class="btn btn-primary">Modifier la catégorie</button>
+                    <button type="button" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </button>
                 </a>
             </div>
         {% endfor %}
         <a href="{{ path('home') }}">
-            <button type="button" class="btn btn-primary">Retour</button>
+            <button type="button" class="btn btn-primary">
+                <span class="glyphicon glyphicon-arrow-left"></span>
+                Retour
+            </button>
         </a>
 
     </div>

@@ -12,40 +12,49 @@
 </head>
 <body>
     <div class="container">
-    <h1>Liste de notes</h1>
-    <a href="{{ path('listeCategorie') }}">
-        <button type="button"  class="btn btn-primary">Gestion
-            des catégories</button>
-    </a>
-    <a href="{{ path('newNote') }}">
-        <button type="button" class="btn btn-primary">Ajouter une note</button>
-    </a>
-    <br></br>
-    {% for note in notes %}
-        <div class='note' id="{{note.id}}">
-            <div class="row">
-                <div class="well well-lg">
-                    <legend>
-                        <b>{{note.title}}<br></b>
-                        {{note.categorie.name}} - <!-- ADD DATE ! -->
-                        {{note.date|date('d/m/Y')}}
-                    </legend>
-                    <div class="well">
-                        <div>
-                            {{note.content}}
+        <h1>Liste de notes</h1>
+        <a href="{{ path('listeCategorie') }}">
+            <button type="button"  class="btn btn-primary">
+                <span class="glyphicon glyphicon-pencil"></span>
+                Gestion des catégories
+            </button>
+        </a>
+        <a href="{{ path('newNote') }}">
+            <button type="button" class="btn btn-primary">
+                <span class="glyphicon glyphicon-plus"></span>
+                Ajouter une note
+            </button>
+        </a>
+        <br></br>
+        {% for note in notes %}
+            <div class='note' id="{{note.id}}">
+                <div class="row">
+                    <div class="well well-lg">
+                        <legend>
+                            <b>{{note.title}}<br></b>
+                            {{note.categorie.name}} -
+                            {{note.date|date('d/m/Y')}}
+                        </legend>
+                        <div class="well">
+                            <div>
+                                {{note.content}}
+                            </div>
                         </div>
+                        <a href="{{ path('deleteNote', {'id' :note.id}) }}">
+                            <button type="button" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </a>
+                        <a href="{{ path('modifyNote', {'id' :note.id}) }}">
+                            <button type="button" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
+                        </a>
                     </div>
-                    <a href="{{ path('deleteNote', {'id' :note.id}) }}">
-                        <button type="button" class="btn btn-primary">Supprimer la note</button>
-                    </a>
-                    <a href="{{ path('modifyNote', {'id' :note.id}) }}">
-                        <button type="button" class="btn btn-primary">Modifier la note</button>
-                    </a>
-                </div>
 
+                </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
     </div>
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>

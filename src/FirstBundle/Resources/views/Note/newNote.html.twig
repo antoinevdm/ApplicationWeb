@@ -13,13 +13,14 @@
         <div>
             {{ form(form) }}
             <a href="{{ path('home') }}">
-                <button type="button" class="btn btn-primary">Retour</button>
+                <button type="button" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-arrow-left"></span>
+                    Retour
+                </button>
             </a>
         </div>
 
     </div>
-
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 </body>
 </html>
