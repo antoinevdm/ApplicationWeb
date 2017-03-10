@@ -22,6 +22,7 @@ class APICategorieController extends Controller
         $em = $this->getDoctrine()->getManager();
         $product = $em->getRepository('FirstBundle:categorie')->findAll();
 
+        //send a serialized json object for each note
         $serializer = $this->get('serializer');
         return new JsonResponse($serializer->serialize($product, 'json'));
     }
@@ -31,7 +32,6 @@ class APICategorieController extends Controller
      * @Method("GET")
      */
     public function getCategorieAction(categorie $cat) {
-
         $serializer = $this->get('serializer');
         return new JsonResponse($serializer->serialize($cat, 'json'));
     }
@@ -50,8 +50,10 @@ class APICategorieController extends Controller
       * @Method("PUT")
       */
       public function updateCategorieAction(Request $request, categorie $cat) {
+          //decode json object on a local vairable
           $data = json_decode($request->getContent(), true);
 
+          //update decoded object's data
           $cat->setName($data['name']);
 
           $em = $this->getDoctrine()->getManager();

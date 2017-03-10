@@ -20,6 +20,7 @@ class CategorieController extends Controller
      * @Route("/listeCategorie", name="listeCategorie")
      */
     public function showCategorie() {
+        //try to connect to db and taking "categorie" data from it
         try {
             $em = $this->getDoctrine()->getManager();
             $product = $em->getRepository('FirstBundle:categorie')->findAll();
@@ -28,7 +29,8 @@ class CategorieController extends Controller
             return $this->redirect($this->generateUrl('listeCategorie'));
         }
 
-        return $this->render('FirstBundle:Note:catergorie.html.twig', array('categories' => $product));
+        return $this->render('FirstBundle:Note:catergorie.html.twig',
+        array('categories' => $product));
     }
 
     /**
@@ -36,7 +38,6 @@ class CategorieController extends Controller
      */
     public function newCategorie(Request $request) {
         $task = new categorie();
-
         return $this->modifyCategorie($request, $task);
     }
 
@@ -61,14 +62,17 @@ class CategorieController extends Controller
      * @Route("/modifyCategorie/{id}", name="modifyCategorie")
      */
     public function modifyCategorie(Request $request, categorie $task) {
+        //Form builder for creating a new categorie
         $form = $this->createFormBuilder($task)
-            ->add('name', TextType::class, array('label' => 'Nom de la catégorie'))
+            ->add('name', TextType::class,
+                array('label' => 'Nom de la catégorie'))
             ->add('save', SubmitType::class, array('label' => 'Sauvegarder'))
             ->getForm();
 
         $form->handleRequest($request);
         $task = $form->getData();
 
+        //Push it in db when form is completed
         if($form->isValid()) {
             try {
                 $em = $this->getDoctrine()->getManager();
@@ -79,9 +83,11 @@ class CategorieController extends Controller
                 return $this->redirect($this->generateUrl('listeCategorie'));
             }
             $this->addFlash('notice', 'La catégorie a bien été engeristée');
+            //go back to previous page
             return $this->redirect($this->generateUrl('listeCategorie'));
         }
 
-        return $this->render('FirstBundle:Note:newCategorie.html.twig', array('form' => $form->createView()));
+        return $this->render('FirstBundle:Note:newCategorie.html.twig',
+        array('form' => $form->createView()));
     }
 }

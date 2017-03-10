@@ -19,13 +19,16 @@ class NoteController extends Controller
      * @Route("/", name="home")
      */
     public function showNote(Request $request) {
+        //Form builder for the tag research, sent to the twig
         $data = array();
         $form = $this->createFormBuilder($data)
             ->add('tag', TextType::class, array('required'=>true))
-            ->add('submit', SubmitType::class, array('label' => 'Rechercher un tag'))
+            ->add('submit', SubmitType::class,
+                array('label' => 'Rechercher un tag'))
             ->getForm();
         $form->handleRequest($request);
 
+        //Try a Db request with error handling
         try {
             $em = $this->getDoctrine()->getManager();
             $product = $em->getRepository('FirstBundle:note')->findAll();
@@ -34,12 +37,11 @@ class NoteController extends Controller
             return $this->redirect($this->generateUrl('home'));
         }
 
-
-        if ($form->getData() != null) {
+        //only show notes with the tag we're looking for
+        if ($form->isValid()) {
             $tag = $form->getData()['tag'];
-
-
             $filtered_notes = array();
+
             foreach ($product as $note) {
                 $xml = new \DOMDocument();
                 $xml->loadXML('<content>'.$note->getContent().'</content>');
@@ -53,6 +55,8 @@ class NoteController extends Controller
                     }
                 }
             }
+
+            //If no note found with that tag, show an error message
             if (sizeof($filtered_notes) > 0) {
                 $product = $filtered_notes;
             } else {
@@ -69,7 +73,6 @@ class NoteController extends Controller
      */
     public function newNote(Request $request) {
         $task = new note();
-
         return $this->modifyNote($request, $task);
     }
 
@@ -79,6 +82,8 @@ class NoteController extends Controller
     public function deleteNote(note $note) {
         $em = $this->getDoctrine()->getManager();
         $toDel = $em->getRepository('FirstBundle:note')->find($note);
+
+        //try to delete the note, with error handling
         try {
             $em->remove($toDel);
             $em->flush();
@@ -96,9 +101,9 @@ class NoteController extends Controller
      */
     public function modifyNote(Request $request, note $task) {
         $em = $this->getDoctrine()->getManager();
-
         $choices = $em->getRepository('FirstBundle:categorie')->findAll();
 
+        //Form builer for note editing, sent to the twig
         $form = $this->createFormBuilder($task)
             ->add('title', TextType::class, array('label' => 'Titre'))
             ->add('content', TextType::class, array('label' => 'Contenu'))
@@ -113,6 +118,7 @@ class NoteController extends Controller
         $form->handleRequest($request);
         $task = $form->getData();
 
+        //try to push data in db, only if the form is completed
         if($form->isValid()) {
             try {
                 $em = $this->getDoctrine()->getManager();
@@ -126,7 +132,8 @@ class NoteController extends Controller
             return $this->redirect($this->generateUrl('home'));
         }
 
-        return $this->render('FirstBundle:Note:newNote.html.twig', array('form' => $form->createView()));
+        return $this->render('FirstBundle:Note:newNote.html.twig',
+            array('form' => $form->createView()));
     }
 
 }

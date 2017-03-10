@@ -49,6 +49,7 @@ class note
       */
      private $categorie;
 
+     //auto completing date time with actual date time value
      public function __construct() {
          $this->date = new \DateTime();
      }
@@ -86,8 +87,6 @@ class note
     {
         return $this->title;
     }
-
-
 
     /**
      * Set content
@@ -163,6 +162,7 @@ class note
 
     public function addXmlNeed($content)
     {
+        //adding xml tag for make the note's content a right XML content
         $toValid = new \DOMDocument;
         $contentxml = new \DOMImplementation;
         $toValid->appendChild($contentxml->createDocumentType('content'));
@@ -174,7 +174,6 @@ class note
 
         $toValid->appendChild($content_elem);
 
-
         return $toValid;
     }
 
@@ -185,6 +184,9 @@ class note
     {
         $toValid = $this->addXmlNeed($this->content);
 
+        //Try to valid the created xml (with note's content) using
+        //schemaContent.xsd (xml schema)
+        //You'll find that file in the "web" repo 
         try {
                 $toValid->schemaValidate("SchemaContent.xsd");
         }

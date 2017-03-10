@@ -31,12 +31,16 @@
             </button>
         </a>
         {{ form_start(form, {'attr': {'class':'form-inline'}}) }}
-        {{ form_label(form.tag, 'Tag', {'label_attr': { 'class': 'sr-only' }}) }}
-        {{ form_widget(form.tag, { 'attr': {'class': 'form-control nav-item'}} ) }}
+        {{ form_label(form.tag, 'Tag',
+            {'label_attr': { 'class': 'sr-only' }}) }}
+        {{ form_widget(form.tag,
+                { 'attr': {'class': 'form-control nav-item'}} ) }}
         {{ form_label(form.submit) }}
-        {{ form_widget(form.submit, { 'attr': {'class': 'navbar-btn btn btn-primary
+        {{ form_widget(form.submit,
+            { 'attr': {'class': 'navbar-btn btn btn-primary
         nav-item'}} ) }}
         {{ form_end(form) }}
+
         {% for note in notes %}
             <div class='note' id="{{note.id}}">
                 <div class="row">

@@ -21,6 +21,7 @@ class APINoteController extends Controller
         $em = $this->getDoctrine()->getManager();
         $product = $em->getRepository('FirstBundle:note')->findAll();
 
+        //serialize and send the data on the json object
         $serializer = $this->get('serializer');
         return new JsonResponse($serializer->serialize($product, 'json'));
     }
@@ -30,6 +31,8 @@ class APINoteController extends Controller
      * @Method("GET")
      */
     public function getNoteAction(note $note) {
+
+        //same than getNotesAction but for a given note
         $serializer = $this->get('serializer');
         return new JsonResponse($serializer->serialize($note, 'json'));
     }
@@ -48,11 +51,13 @@ class APINoteController extends Controller
       * @Method("PUT")
       */
       public function updateNoteAction(Request $request, note $note) {
+          //decode the json object in a local vairable
           $data = json_decode($request->getContent(), true);
 
           $em = $this->getDoctrine()->getManager();
           $cat = $em->getRepository('FirstBundle:categorie')->find($data['categorie']);
 
+          //put datas into that decoded object
           $note->setTitle($data['title']);
           $note->setContent($data['content']);
           $note->setCategorie($cat);
@@ -71,7 +76,7 @@ class APINoteController extends Controller
        public function deleteNoteAction(Request $request, note $note) {
            $em = $this->getDoctrine()->getManager();
            $toDel = $em->getRepository('FirstBundle:note')->find($note);
-
+           
            $em->remove($toDel);
            $em->flush();
 
