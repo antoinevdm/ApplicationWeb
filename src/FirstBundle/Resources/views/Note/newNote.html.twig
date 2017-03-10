@@ -6,6 +6,21 @@
     <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
     {% form_theme form 'bootstrap_3_layout.html.twig' %}
     {# {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %} #}
+
+    <!--Js fonction for adding tag-->
+    <script>
+        function wrapText(elementID, openTag, closeTag) {
+            var textArea = document.querySelector('#' + elementID);
+            var len = textArea.value.length;
+            var start = textArea.selectionStart;
+            var end = textArea.selectionEnd;
+            var selectedText = textArea.value.substring(start, end);
+            var replacement = openTag + selectedText + closeTag;
+            textArea.value = textArea.value.substring(0, start) +
+                replacement + textArea.value.substring(end, len);
+        }
+    </script>
+
 </head>
 <body>
     <div class="container">
@@ -13,14 +28,19 @@
         <div>
             {{ form(form) }}
             <a href="{{ path('home') }}">
-                <button type="button" class="btn btn-primary">
+                <button class="btn btn-primary">
                     <span class="glyphicon glyphicon-arrow-left"></span>
                     Retour
                 </button>
             </a>
+            <button class="btn btn-primary" onclick='wrapText("form_content", "<tag>", "</tag>")'>
+                <span class="glyphicon glyphicon-tag"></span>
+                Ajtouer un tag
+            </button>
         </div>
 
     </div>
+
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 </body>
 </html>

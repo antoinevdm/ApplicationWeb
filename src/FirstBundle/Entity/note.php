@@ -3,6 +3,7 @@
 namespace FirstBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * note
@@ -158,5 +159,38 @@ class note
     public function getCategorie()
     {
         return $this->categorie;
+    }
+
+    public function addXmlNeed($content)
+    {
+        $toValid = new \DOMDocument;
+        $contentxml = new \DOMImplementation;
+        $toValid->appendChild($contentxml->createDocumentType('content'));
+
+        $content_elem = $toValid->createElement('content');
+        $content_xml = $toValid->createDocumentFragment();
+        $content_xml->appendXML($this->content);
+        $content_elem->appendChild($content_xml);
+
+        $toValid->appendChild($content_elem);
+
+
+        return $toValid;
+    }
+
+    /**
+     * @Assert\IsTrue(message = "Xml non valide")
+     */
+    public function isValid()
+    {
+        $toValid = $this->addXmlNeed($this->content);
+
+        try {
+                $toValid->schemaValidate("SchemaContent.xsd");
+        }
+        catch( \ErrorException $e) {
+            return false;
+        }
+        return true;
     }
 }

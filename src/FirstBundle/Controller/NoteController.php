@@ -18,7 +18,14 @@ class NoteController extends Controller
     /**
      * @Route("/", name="home")
      */
-    public function showNote() {
+    public function showNote(Request $request) {
+        $data = array();
+        $form = $this->createFormBuilder($data)
+            ->add('tag', TextType::class, array('required'=>true))
+            ->add('submit', SubmitType::class, array('label' => 'Rechercher un tag'))
+            ->getForm();
+        $form->handleRequest($request);
+
         try {
             $em = $this->getDoctrine()->getManager();
             $product = $em->getRepository('FirstBundle:note')->findAll();
@@ -27,7 +34,34 @@ class NoteController extends Controller
             return $this->redirect($this->generateUrl('home'));
         }
 
-        return $this->render('FirstBundle:Note:index.html.twig', array('notes' => $product));
+
+        if ($form->getData() != null) {
+            $tag = $form->getData()['tag'];
+
+
+            $filtered_notes = array();
+            foreach ($product as $note) {
+                $xml = new \DOMDocument();
+                $xml->loadXML('<content>'.$note->getContent().'</content>');
+                $xpath = new \DOMXPath($xml);
+                $elements = $xpath->query('//tag');
+
+                foreach ($elements as $element) {
+                    if ($element->textContent == $tag) {
+                        $filtered_notes[] = $note;
+                        break;
+                    }
+                }
+            }
+            if (sizeof($filtered_notes) > 0) {
+                $product = $filtered_notes;
+            } else {
+                $this->addFlash('bad', 'Aucune note correspondant à ce tag');
+            }
+        }
+
+        return $this->render('FirstBundle:Note:index.html.twig',
+            array('notes' => $product, 'form' => $form->createView()));
     }
 
     /**
@@ -94,4 +128,5 @@ class NoteController extends Controller
 
         return $this->render('FirstBundle:Note:newNote.html.twig', array('form' => $form->createView()));
     }
+
 }

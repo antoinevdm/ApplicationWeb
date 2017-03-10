@@ -9,6 +9,11 @@
             {{ flashMessage }}
         </div>
     {% endfor %}
+    {% for flashMessage in app.session.flashBag.get('bad') %}
+        <div class="alert alert-warning">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
 </head>
 <body>
     <div class="container">
@@ -20,12 +25,18 @@
             </button>
         </a>
         <a href="{{ path('newNote') }}">
-            <button type="button" class="btn btn-primary">
+            <button class="btn btn-primary">
                 <span class="glyphicon glyphicon-plus"></span>
                 Ajouter une note
             </button>
         </a>
-        <br></br>
+        {{ form_start(form, {'attr': {'class':'form-inline'}}) }}
+        {{ form_label(form.tag, 'Tag', {'label_attr': { 'class': 'sr-only' }}) }}
+        {{ form_widget(form.tag, { 'attr': {'class': 'form-control nav-item'}} ) }}
+        {{ form_label(form.submit) }}
+        {{ form_widget(form.submit, { 'attr': {'class': 'navbar-btn btn btn-primary
+        nav-item'}} ) }}
+        {{ form_end(form) }}
         {% for note in notes %}
             <div class='note' id="{{note.id}}">
                 <div class="row">
@@ -36,7 +47,7 @@
                             {{note.date|date('d/m/Y')}}
                         </legend>
                         <div class="well">
-                            <div>
+                            <div class='panel-body'>
                                 {{note.content}}
                             </div>
                         </div>
@@ -58,6 +69,15 @@
     </div>
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', function() {
+            var elements = document.querySelectorAll('.panel-body');
+            console.log(elements);
+            for (elem of elements) {
+                elem.innerHTML = elem.innerHTML.replace(/&lt;\/?tag&gt;/g, '');
+            }
+        });
+    </script>
 </body>
 
 </html>
