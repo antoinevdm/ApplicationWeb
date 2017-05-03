@@ -76,11 +76,23 @@ class APINoteController extends Controller
        public function deleteNoteAction(Request $request, note $note) {
            $em = $this->getDoctrine()->getManager();
            $toDel = $em->getRepository('FirstBundle:note')->find($note);
-           
+
            $em->remove($toDel);
            $em->flush();
 
            return new Response();
        }
+
+       /**
+         * @Route("/api/note/{id}")
+         * @Method("OPTIONS")
+         */
+        function cors() {
+            $response = new Response();
+            $response->headers->set('Content-Type', 'application/text');
+            $response->headers->set('Access-Control-Allow-Origin', '*');
+            $response->headers->set('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+            return $response;
+        }
 
 }

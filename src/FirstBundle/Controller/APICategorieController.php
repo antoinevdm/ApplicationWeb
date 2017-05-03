@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class APICategorieController extends Controller
 {
-
     /**
      * @Route("/api/categorie")
      * @Method("GET")
@@ -76,4 +75,27 @@ class APICategorieController extends Controller
 
            return new Response();
        }
+
+       /**
+         * @Route("/api/categorie/{id}")
+         * @Method("OPTIONS")
+         */
+        function cors() {
+            $response = new Response();
+            $response->headers->set('Content-Type', 'application/text');
+            $response->headers->set('Access-Control-Allow-Origin', '*');
+            $response->headers->set('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+            return $response;
+        }
+        /**
+         * @Route("/api/categorie/")
+         * @Method("OPTIONS")
+         */
+        function cors1() {
+            $response = new Response();
+            $response->headers->set('Content-Type', 'application/text');
+            $response->headers->set('Access-Control-Allow-Origin', '*');
+            $response->headers->set('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+            return $response;
+        }
 }

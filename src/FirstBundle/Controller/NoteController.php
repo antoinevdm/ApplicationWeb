@@ -15,9 +15,11 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class NoteController extends Controller
 {
+
     /**
      * @Route("/", name="home")
      */
+     /*
     public function showNote(Request $request) {
         //Form builder for the tag research, sent to the twig
         $data = array();
@@ -67,6 +69,14 @@ class NoteController extends Controller
         return $this->render('FirstBundle:Note:index.html.twig',
             array('notes' => $product, 'form' => $form->createView()));
     }
+    */
+
+    /**
+     * @Route("/", name="home")
+     */
+     public function angular() {
+         return $this->render('FirstBundle:Note:index.html.twig');
+     }
 
     /**
      * @Route("/newNote", name="newNote")

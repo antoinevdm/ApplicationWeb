@@ -1,87 +1,20 @@
+<!doctype html>
 <html>
 <head>
-    <title>Liste de notes</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
-    {% for flashMessage in app.session.flashBag.get('notice') %}
-        <div class="alert alert-success">
-            {{ flashMessage }}
-        </div>
-    {% endfor %}
-    {% for flashMessage in app.session.flashBag.get('bad') %}
-        <div class="alert alert-warning">
-            {{ flashMessage }}
-        </div>
-    {% endfor %}
+  <meta charset="utf-8">
+  <title>Frontend</title>
+  <base href="/first_project/web/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="{{ asset('bundles/first/js/styles.bundle.css') }}" rel='stylesheet'>
 </head>
-<body>
-    <div class="container">
-        <h1>Liste de notes</h1>
-        <a href="{{ path('listeCategorie') }}">
-            <button type="button"  class="btn btn-primary">
-                <span class="glyphicon glyphicon-pencil"></span>
-                Gestion des catégories
-            </button>
-        </a>
-        <a href="{{ path('newNote') }}">
-            <button class="btn btn-primary">
-                <span class="glyphicon glyphicon-plus"></span>
-                Ajouter une note
-            </button>
-        </a>
-        {{ form_start(form, {'attr': {'class':'form-inline'}}) }}
-        {{ form_label(form.tag, 'Tag',
-            {'label_attr': { 'class': 'sr-only' }}) }}
-        {{ form_widget(form.tag,
-                { 'attr': {'class': 'form-control nav-item'}} ) }}
-        {{ form_label(form.submit) }}
-        {{ form_widget(form.submit,
-            { 'attr': {'class': 'navbar-btn btn btn-primary
-        nav-item'}} ) }}
-        {{ form_end(form) }}
+<body class='container'>
+  <my-app>Loading...</my-app>
 
-        {% for note in notes %}
-            <div class='note' id="{{note.id}}">
-                <div class="row">
-                    <div class="well well-lg">
-                        <legend>
-                            <b>{{note.title}}<br></b>
-                            {{note.categorie.name}} -
-                            {{note.date|date('d/m/Y')}}
-                        </legend>
-                        <div class="well">
-                            <div class='panel-body'>
-                                {{note.content}}
-                            </div>
-                        </div>
-                        <a href="{{ path('deleteNote', {'id' :note.id}) }}">
-                            <button type="button" class="btn btn-primary">
-                                <span class="glyphicon glyphicon-trash"></span>
-                            </button>
-                        </a>
-                        <a href="{{ path('modifyNote', {'id' :note.id}) }}">
-                            <button type="button" class="btn btn-primary">
-                                <span class="glyphicon glyphicon-edit"></span>
-                            </button>
-                        </a>
-                    </div>
-
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-    <script>
-        window.addEventListener('DOMContentLoaded', function() {
-            var elements = document.querySelectorAll('.panel-body');
-            console.log(elements);
-            for (elem of elements) {
-                elem.innerHTML = elem.innerHTML.replace(/&lt;\/?tag&gt;/g, '');
-            }
-        });
-    </script>
+    <script src="{{ asset('bundles/first/js/inline.bundle.js') }}"></script>
+    <script src="{{ asset('bundles/first/js/vendor.bundle.js') }}"></script>
+    <script src="{{ asset('bundles/first/js/polyfills.bundle.js') }}"></script>
+    <script src="{{ asset('bundles/first/js/main.bundle.js') }}"></script>
 </body>
-
 </html>
